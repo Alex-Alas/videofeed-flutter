@@ -20,7 +20,7 @@ flutter run
 
 `lib/firebase_options.dart` ya viene con la configuración del proyecto del equipo una vez que S-02 está en `main`. No hace falta que cada quien corra `flutterfire configure`.
 
-Si la app falla al iniciar con "Firebase todavía no está configurado", actualiza tu rama: `git pull origin main`.
+Si la app falla al iniciar con "Firebase todavía no está configurado", actualiza tu rama: `git pull origin development`.
 
 ## Estructura
 
@@ -43,16 +43,18 @@ docs/                    guía de Firebase y actividad 4
 ## Cómo trabajamos
 
 1. Antes de empezar, marca tu tarea como **En progreso** en el tablero.
-2. Crea una rama desde `main` con el ID de la tarea:
+2. Crea una rama desde `development` con el ID de la tarea:
+   `git checkout development && git pull origin development`
    `git checkout -b feature/A-01-auth-service`
 3. Haz commits pequeños y sube tu rama: `git push -u origin feature/A-01-auth-service`
-4. Abre un Pull Request hacia `main` usando la plantilla. Alex (o quien tenga la tarea relacionada) lo revisa.
+4. Abre un Pull Request hacia `development` (no hacia `main`) usando la plantilla. Alex (o quien tenga la tarea relacionada) lo revisa.
 5. Cuando se fusione, marca la tarea como **Hecho** en el tablero.
 
 Reglas del equipo:
 
 - Nadie fuera de `lib/repositories` usa `FirebaseFirestore.instance` directamente.
-- No se sube a `main` sin PR.
+- `development` es la rama de integración; `main` solo recibe versiones estables desde `development` (lo hace Alex).
+- No se sube a `development` ni a `main` sin PR.
 - Corre `flutter analyze` antes de abrir el PR.
 
 ## Modelo de datos
