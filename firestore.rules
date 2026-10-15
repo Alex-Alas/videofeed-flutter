@@ -1,0 +1,31 @@
+// firestore.rules (versión inicial, tarea S-04)
+//
+// Punto de partida: todo requiere sesión iniciada. La tarea D-04 las
+// endurece (autorUid == uid, un like por usuario, validación de campos).
+// Se publican en la consola: Firestore Database → Reglas.
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    match /users/{uid} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == uid;
+    }
+
+    match /videos/{videoId} {
+      allow read: if request.auth != null;
+      allow create: if request.auth != null
+        && request.resource.data.autorUid == request.auth.uid;
+      allow update: if request.auth != null;
+      allow delete: if request.auth != null
+        && resource.data.autorUid == request.auth.uid;
+
+      match /likes/{uid} {
+        allow read: if request.auth != null;
+        allow write: if request.auth != null && request.auth.uid == uid;
+      }
+    }
+  }
+}
