@@ -8,13 +8,26 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 class FirebaseCheckScreen extends StatelessWidget {
-  const FirebaseCheckScreen({super.key});
+  /// Cierra la sesion; si es null no se muestra el boton en la barra superior.
+  final Future<void> Function()? onCerrarSesion;
+
+  const FirebaseCheckScreen({super.key, this.onCerrarSesion});
 
   @override
   Widget build(BuildContext context) {
     final app = Firebase.app();
     return Scaffold(
-      appBar: AppBar(title: const Text('VideoFeed')),
+      appBar: AppBar(
+        title: const Text('VideoFeed'),
+        actions: [
+          if (onCerrarSesion != null)
+            IconButton(
+              icon: const Icon(Icons.logout),
+              tooltip: 'Cerrar sesion',
+              onPressed: onCerrarSesion,
+            ),
+        ],
+      ),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(24),
