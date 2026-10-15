@@ -10,7 +10,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 import 'firebase_options.dart';
-import 'screens/home/firebase_check_screen.dart';
+import 'screens/auth/auth_gate.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,9 +39,8 @@ class VideoFeedApp extends StatelessWidget {
         brightness: Brightness.dark,
         useMaterial3: true,
       ),
-      // TODO(A-03): reemplazar por AuthGate (StreamBuilder sobre
-      // authStateChanges) cuando AuthService (A-01) esté listo.
-      home: const FirebaseCheckScreen(),
+      // AuthGate decide login o app segun authStateChanges.
+      home: const AuthGate(),
     );
   }
 }
