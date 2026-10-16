@@ -9,8 +9,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
+import 'config/theme/app_theme.dart';
 import 'firebase_options.dart';
-import 'screens/home/firebase_check_screen.dart';
+import 'presentation/screens/auth/auth_gate.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,18 +31,10 @@ class VideoFeedApp extends StatelessWidget {
     return MaterialApp(
       title: 'VideoFeed',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorSchemeSeed: Colors.teal,
-        useMaterial3: true,
-      ),
-      darkTheme: ThemeData(
-        colorSchemeSeed: Colors.teal,
-        brightness: Brightness.dark,
-        useMaterial3: true,
-      ),
-      // TODO(A-03): reemplazar por AuthGate (StreamBuilder sobre
-      // authStateChanges) cuando AuthService (A-01) esté listo.
-      home: const FirebaseCheckScreen(),
+      theme: AppTheme.claro(),
+      darkTheme: AppTheme.oscuro(),
+      // AuthGate decide login o feed segun authStateChanges.
+      home: const AuthGate(),
     );
   }
 }
