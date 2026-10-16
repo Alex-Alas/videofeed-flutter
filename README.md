@@ -24,20 +24,40 @@ Si la app falla al iniciar con "Firebase todavía no está configurado", actuali
 
 ## Estructura
 
+Misma organización por capas que la referencia (`dam-353n/copiaTikTokCompleta`):
+
 ```
 lib/
-  main.dart              orden de inicialización de Firebase
-  firebase_options.dart  generado por flutterfire configure
-  models/                Video (D-01)
-  repositories/          VideoRepository + Fake y Firestore (D-01..D-03, L-01)
-  services/              AuthService (A-01), StorageService (U-02)
-  screens/
-    auth/                Login y registro (A-02)
-    feed/                Feed y reproductor (F-01..F-04)
-    upload/              Subir video (U-01..U-04)
-firestore.rules          reglas de Firestore (S-04, D-04)
-storage.rules            reglas de Storage (S-04, D-04)
-docs/                    guía de Firebase y actividad 4
+  main.dart                     orden de inicialización de Firebase
+  main_demo.dart                feed con datos falsos, sin login ni Firebase
+  firebase_options.dart         generado por flutterfire configure
+  config/
+    helpers/                    HumanFormats (contadores legibles)
+    theme/                      AppTheme (claro y oscuro)
+  domain/                       qué hace la app, sin Firebase
+    entities/                   Video (D-01)
+    datasources/                AuthDataSource + AuthFailure (A-01)
+    repositories/               VideoRepository (contrato D-01)
+  infrastructure/               cómo lo hace (Firebase)
+    datasources/                AuthService (A-01), StorageService (U-02)
+    repositories/               AuthRepository, Fake/FirestoreVideoRepository (D-02, D-03, L-01)
+  presentation/
+    screens/auth/               AuthGate y login/registro (A-02, A-03)
+    screens/feed/               FeedScreen (F-01..F-04)
+    screens/upload/             UploadScreen (U-01..U-04)
+    widgets/shared/             VideoScrollableView, VideoButtons, FeedVacio
+    widgets/video/              FullScreenPlayer, VideoBackground
+  shared/data/                  videos de ejemplo para el Fake y el demo
+assets/videos/                  videos verticales de Pexels (licencia libre)
+firestore.rules                 reglas de Firestore (S-04, D-04)
+storage.rules                   reglas de Storage (S-04, D-04)
+docs/                           guía de Firebase y planes
+```
+
+Para trabajar la UI del feed sin tocar el proyecto de Firebase:
+
+```bash
+flutter run -t lib/main_demo.dart
 ```
 
 ## Cómo trabajamos
@@ -52,7 +72,7 @@ docs/                    guía de Firebase y actividad 4
 
 Reglas del equipo:
 
-- Nadie fuera de `lib/repositories` usa `FirebaseFirestore.instance` directamente.
+- Nadie fuera de `lib/infrastructure` usa `FirebaseFirestore.instance` ni `FirebaseStorage.instance` directamente.
 - `development` es la rama de integración; `main` solo recibe versiones estables desde `development` (lo hace Alex).
 - No se sube a `development` ni a `main` sin PR.
 - Corre `flutter analyze` antes de abrir el PR.

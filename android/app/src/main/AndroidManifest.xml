@@ -1,4 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Necesario en release para Firebase y para reproducir videos por URL. -->
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:label="videofeed"
         android:name="${applicationName}"
