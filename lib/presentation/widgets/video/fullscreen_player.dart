@@ -25,12 +25,24 @@ class FullScreenPlayer extends StatefulWidget {
 }
 
 class _FullScreenPlayerState extends State<FullScreenPlayer> {
+  bool get _esImagen {
+    final url = widget.videoUrl.toLowerCase();
+
+    return url.contains('.jpg') ||
+        url.contains('.png') ||
+        url.contains('.webp') ||
+        url.contains('.jpeg');
+  }
   late final VideoPlayerController _controller;
   late final Future<void> _inicializacion;
 
   @override
   void initState() {
     super.initState();
+
+    if(_esImagen) {
+      return;
+    }
     // Los videos de ejemplo vienen de assets/; los reales, de Storage (https).
     _controller = widget.videoUrl.startsWith('assets/')
         ? VideoPlayerController.asset(widget.videoUrl)
@@ -59,6 +71,25 @@ class _FullScreenPlayerState extends State<FullScreenPlayer> {
 
   @override
   Widget build(BuildContext context) {
+    if (_esImagen) {
+      return Stack(
+        fit: StackFit.expand,
+        children: [
+          Image.network(
+            widget.videoUrl,
+            fit: BoxFit.cover,
+          ),
+
+          VideoBackground(stops: const [0.7, 1.0]),
+
+          Positioned(
+            bottom: 50,
+            left: 20,
+            child: _VideoCaption(autor: widget.autor, titulo: widget.titulo,),
+          ),
+        ],
+        );
+    }
     return FutureBuilder<void>(
       future: _inicializacion,
       builder: (context, snapshot) {

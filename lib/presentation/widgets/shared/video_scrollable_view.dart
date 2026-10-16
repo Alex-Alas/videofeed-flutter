@@ -30,6 +30,9 @@ class VideoScrollableView extends StatelessWidget {
       itemBuilder: (context, index) {
         final video = videos[index];
 
+        debugPrint(
+          'Feed item => url=${video.videoUrl} storage=${video.storagePath}',
+        );
         return Stack(
           key: ValueKey(video.id),
           children: [
