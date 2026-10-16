@@ -50,3 +50,6 @@ app.*.map.json
 # Firebase / FlutterFire
 .firebase/
 firebase-debug.log
+
+# Videos sueltos de prueba: los de ejemplo van en assets/videos/
+/lib/**/*.mp4
