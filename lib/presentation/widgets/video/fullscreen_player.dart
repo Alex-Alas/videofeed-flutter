@@ -122,14 +122,31 @@ class _FullScreenPlayerState extends State<FullScreenPlayer> {
                 ),
               ),
 
-              // TODO(Integrante 6): indicador de pausa y barra de progreso.
-              //  1. Si el video está pausado (!_controller.value.isPlaying),
-              //     mostrar en el centro un Icon(Icons.play_arrow_rounded)
-              //     grande, blanco y semitransparente.
-              //  2. Abajo de todo, un VideoProgressIndicator(_controller,
-              //     allowScrubbing: true) con colores visibles sobre negro.
-              //  _alternarReproduccion ya llama a setState, así que el ícono
-              //  aparece y desaparece solo al tocar el video.
+                            if (!_controller.value.isPlaying)
+                const IgnorePointer(
+                  child: Center(
+                    child: Icon(
+                      Icons.play_arrow_rounded,
+                      size: 96,
+                      color: Colors.white70,
+                    ),
+                  ),
+                ),
+
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: VideoProgressIndicator(
+                  _controller,
+                  allowScrubbing: true,
+                  colors: const VideoProgressColors(
+                    playedColor: Colors.white,
+                    bufferedColor: Colors.white38,
+                    backgroundColor: Colors.white12,
+                  ),
+                ),
+              ),
             ],
           ),
         );
