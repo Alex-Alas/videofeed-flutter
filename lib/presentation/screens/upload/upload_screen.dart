@@ -11,6 +11,7 @@ import 'package:video_player/video_player.dart';
 
 import '../../../domain/repositories/video_repository.dart';
 import '../../../infrastructure/datasources/storage_service.dart';
+import '../../widgets/uploaders/live_camera/live_camera_screen.dart';
 
 class UploadScreen extends StatefulWidget {
   static const Duration duracionMaxima = Duration(seconds: 60);
@@ -192,6 +193,27 @@ class _UploadScreenState extends State<UploadScreen> {
                 _VistaPrevia(
                   controller: preview,
                   onElegir: _publicando ? null : _elegirVideo,
+                ),
+                const SizedBox(height: 12),
+                OutlinedButton.icon(
+                  onPressed: _publicando ? null : ()  async {
+                    final publicado = await Navigator.of(context).push<bool>(
+                      MaterialPageRoute(
+                        builder: (_) => FiltrosEnVivoScreen(
+                          repositorio: widget.repositorio,
+                          storage: widget.storage,
+                          uid: widget.uid,
+                          nombreUsuario: widget.nombreUsuario) 
+                        ),
+                    );
+                    if (!context.mounted) return;
+
+                    if (publicado == true) {
+                      Navigator.of(context).pop(true);
+                    }
+                  },
+                  icon: const Icon(Icons.photo_camera),
+                  label: const Text('Tomar fotografía'),
                 ),
                 const SizedBox(height: 12),
                 if (preview != null)

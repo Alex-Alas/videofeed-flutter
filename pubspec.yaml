@@ -40,6 +40,12 @@ dependencies:
   firebase_storage: ^14.0.0
   image_picker: ^1.2.4
   video_player: ^2.14.1
+  camera: ^0.12.1
+  google_mlkit_text_recognition: ^0.15.0
+  google_mlkit_image_labeling: ^0.14.1
+  google_mlkit_face_detection: ^0.13.1
+  path_provider: ^2.1.5
+  intl: ^0.20.3
 
 dev_dependencies:
   flutter_test:
@@ -68,6 +74,7 @@ flutter:
   # Videos verticales de ejemplo (Pexels) para el modo demo y FakeVideoRepository.
   assets:
     - assets/videos/
+    - assets/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

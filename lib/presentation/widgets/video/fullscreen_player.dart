@@ -25,12 +25,24 @@ class FullScreenPlayer extends StatefulWidget {
 }
 
 class _FullScreenPlayerState extends State<FullScreenPlayer> {
+  bool get _esImagen {
+    final url = widget.videoUrl.toLowerCase();
+
+    return url.contains('.jpg') ||
+        url.contains('.png') ||
+        url.contains('.webp') ||
+        url.contains('.jpeg');
+  }
   late final VideoPlayerController _controller;
   late final Future<void> _inicializacion;
 
   @override
   void initState() {
     super.initState();
+
+    if(_esImagen) {
+      return;
+    }
     // Los videos de ejemplo vienen de assets/; los reales, de Storage (https).
     _controller = widget.videoUrl.startsWith('assets/')
         ? VideoPlayerController.asset(widget.videoUrl)
@@ -59,6 +71,25 @@ class _FullScreenPlayerState extends State<FullScreenPlayer> {
 
   @override
   Widget build(BuildContext context) {
+    if (_esImagen) {
+      return Stack(
+        fit: StackFit.expand,
+        children: [
+          Image.network(
+            widget.videoUrl,
+            fit: BoxFit.cover,
+          ),
+
+          VideoBackground(stops: const [0.7, 1.0]),
+
+          Positioned(
+            bottom: 50,
+            left: 20,
+            child: _VideoCaption(autor: widget.autor, titulo: widget.titulo,),
+          ),
+        ],
+        );
+    }
     return FutureBuilder<void>(
       future: _inicializacion,
       builder: (context, snapshot) {
@@ -91,14 +122,31 @@ class _FullScreenPlayerState extends State<FullScreenPlayer> {
                 ),
               ),
 
-              // TODO(Integrante 6): indicador de pausa y barra de progreso.
-              //  1. Si el video está pausado (!_controller.value.isPlaying),
-              //     mostrar en el centro un Icon(Icons.play_arrow_rounded)
-              //     grande, blanco y semitransparente.
-              //  2. Abajo de todo, un VideoProgressIndicator(_controller,
-              //     allowScrubbing: true) con colores visibles sobre negro.
-              //  _alternarReproduccion ya llama a setState, así que el ícono
-              //  aparece y desaparece solo al tocar el video.
+                            if (!_controller.value.isPlaying)
+                const IgnorePointer(
+                  child: Center(
+                    child: Icon(
+                      Icons.play_arrow_rounded,
+                      size: 96,
+                      color: Colors.white70,
+                    ),
+                  ),
+                ),
+
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: VideoProgressIndicator(
+                  _controller,
+                  allowScrubbing: true,
+                  colors: const VideoProgressColors(
+                    playedColor: Colors.white,
+                    bufferedColor: Colors.white38,
+                    backgroundColor: Colors.white12,
+                  ),
+                ),
+              ),
             ],
           ),
         );
