@@ -5,23 +5,49 @@
 import 'package:flutter/material.dart';
 
 class FeedVacio extends StatelessWidget {
-  /// Abre la pantalla de subir video; si es null no se muestra el botón.
   final VoidCallback? onSubirVideo;
 
   const FeedVacio({super.key, this.onSubirVideo});
 
-  // TODO(Integrante 5): convertir este texto en un estado vacío completo:
-  //  1. Un ícono grande (por ejemplo Icons.video_library_outlined) en blanco.
-  //  2. Título "Aún no hay videos" y un subtítulo "Sé el primero en subir uno".
-  //  3. Si onSubirVideo no es null, un FilledButton.icon con Icons.add y el
-  //     texto "Subir video" que llame a onSubirVideo.
-  //  Todo centrado y con texto blanco (el feed tiene fondo negro).
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        'Aún no hay videos',
-        style: TextStyle(color: Colors.white),
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(
+              Icons.video_library_outlined,
+              size: 80,
+              color: Colors.white,
+            ),
+            const SizedBox(height: 16),
+            const Text(
+              'Aún no hay videos',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'Sé el primero en subir uno',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.white),
+            ),
+            if (onSubirVideo != null) ...[
+              const SizedBox(height: 24),
+              FilledButton.icon(
+                onPressed: onSubirVideo,
+                icon: const Icon(Icons.add),
+                label: const Text('Subir video'),
+              ),
+            ],
+          ],
+        ),
       ),
     );
   }
